@@ -2,10 +2,13 @@
 <html lang="en" data-theme="light">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#f4f3ef">
-<title>Anwar Tape</title>
+<meta name="description" content="Simple room measurements and price summary for flooring and wall work.">
+<title>Laying Tape</title>
 <link rel="stylesheet" href="style.css">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icon.svg" type="image/svg+xml">
 </head>
 <body>
 <main class="app">
@@ -13,7 +16,7 @@
   <header class="topbar no-print">
     <div class="brand">
       <div class="brand-icon" data-icon="tape" aria-hidden="true"></div>
-      <div><h1>Anwar Tape</h1><p class="tagline">Length × Width = Sq Ft</p></div>
+      <div><h1>Laying Tape</h1><p class="tagline">simply the best</p></div>
     </div>
     <div class="header-actions">
       <button class="theme-toggle" id="themeToggle" type="button" aria-label="Switch to dark theme">
@@ -27,6 +30,7 @@
         </svg>
         <span>Summary Sheet</span>
       </button>
+      <button class="summary-action install-button" id="installAppButton" type="button" hidden>Install App</button>
     </div>
   </header>
 
@@ -41,6 +45,7 @@
 
   <section class="panel no-print" aria-label="Add measurement">
     <div class="section-title"><h2>Add Measurement</h2><span class="hint">Tap to select</span></div>
+    <p class="simple-help">Choose a room, enter its size in feet, then tap “Add Measurement.”</p>
     <div class="step">
       <p class="step-label">1 · Select Area</p>
       <div class="choices" id="areaBtns" aria-label="Select area"></div>
@@ -95,8 +100,8 @@
 
   <section id="summaryWrap" aria-labelledby="summaryTitle" hidden>
     <div class="summary">
-      <h2 id="summaryTitle">Anwar Tape — Summary</h2>
-      <p class="summary-intro">Area Name · Work Type · Material · Quantity · Final Sq Ft</p>
+      <h2 id="summaryTitle">Laying Tape — Summary</h2>
+      <!-- <p class="summary-intro">Area Name · Work Type · Material · Quantity · Final Sq Ft</p> -->
       <div class="summary-meta">
         <p><b>Customer:</b> <span id="sCust"></span></p>
         <p><b>Site:</b> <span id="sSite"></span></p>
@@ -107,14 +112,57 @@
         <tbody id="sTb"></tbody>
         <tfoot><tr class="total-row"><td colspan="4">TOTAL</td><td id="sTot">0</td></tr></tfoot>
       </table>
-      <p class="signature">Signature: ____________________</p>
+      <!-- <p class="signature">Signature: ____________________</p> -->
       <div class="actions no-print">
-        <button class="secondary" id="printSummaryButton" type="button"><span class="field-icon" data-icon="printer" aria-hidden="true"></span> Print Summary</button>
+        <button class="secondary" id="generatePdfButton" type="button"><span class="field-icon" data-icon="printer" aria-hidden="true"></span> Generate PDF</button>
+        <button class="secondary" id="sharePdfButton" type="button"><span class="field-icon" data-icon="person" aria-hidden="true"></span> Share PDF on WhatsApp</button>
+        <button class="primary" id="priceSummaryButton" type="button">Continue to Price Summary</button>
         <button class="secondary" id="backButton" type="button"><span class="field-icon" data-icon="back" aria-hidden="true"></span> Back to Calculator</button>
       </div>
     </div>
   </section>
+
+  <section id="priceWrap" aria-labelledby="priceTitle" hidden>
+    <div class="summary">
+      <h2 id="priceTitle">Final Measurements &amp; Price Summary</h2>
+      <div class="summary-meta">
+        <p><b>Customer:</b> <span id="pCust"></span></p>
+        <p><b>Site:</b> <span id="pSite"></span></p>
+        <p><b>Date:</b> <span id="pDate"></span></p>
+      </div>
+      <h3>Rates by Work and Material</h3>
+      <p class="price-note">Enter the rate per square foot for each work and material combination.</p>
+      <table class="rate-table">
+        <thead><tr><th>Work Type</th><th>Material</th><th>Rate (₹ / sq ft)</th></tr></thead>
+        <tbody id="rateTb"></tbody>
+      </table>
+      <p id="priceStatus" class="price-note" aria-live="polite"></p>
+      <h3>Final Measurements and Prices</h3>
+      <table class="price-table">
+        <thead><tr><th>Area</th><th>Work</th><th>Material</th><th>Final Sq Ft</th><th>Rate / Sq Ft</th><th>Amount</th></tr></thead>
+        <tbody id="priceTb"></tbody>
+        <tfoot><tr class="total-row"><td colspan="3">TOTAL</td><td id="priceSqFt">0</td><td></td><td id="priceTotal">₹ 0.00</td></tr></tfoot>
+      </table>
+      <div class="actions no-print">
+        <button class="secondary" id="generatePricePdfButton" type="button">Generate Price PDF</button>
+        <button class="secondary" id="sharePricePdfButton" type="button">Share Price PDF on WhatsApp</button>
+        <button class="secondary" id="backToMeasurementsButton" type="button"><span class="field-icon" data-icon="back" aria-hidden="true"></span> Back to Measurement Summary</button>
+      </div>
+    </div>
+  </section>
+  <nav class="bottom-nav no-print" id="bottomNav" aria-label="App steps">
+    <button type="button" data-view="measure" aria-current="step">
+      <span class="nav-icon" data-icon="ruler" aria-hidden="true"></span><span>1. Add Sizes</span>
+    </button>
+    <button type="button" data-view="summary">
+      <span class="nav-icon" data-icon="eye" aria-hidden="true"></span><span>2. View Summary</span>
+    </button>
+    <button type="button" data-view="price">
+      <span class="nav-icon" data-icon="money" aria-hidden="true"></span><span>3. Enter Prices</span>
+    </button>
+  </nav>
 </main>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <script src="script.js"></script>
 </body>
 </html>

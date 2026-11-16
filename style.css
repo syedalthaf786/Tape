@@ -56,7 +56,8 @@ input {
 
 .app {
     width: min(100%, 760px);
-    margin: 0 auto
+    margin: 0 auto;
+    padding-bottom: 90px
 }
 
 .topbar {
@@ -155,6 +156,14 @@ p {
     margin: 0 0 12px;
     color: var(--muted);
     font-size: 14px
+}
+
+.simple-help {
+    margin: -4px 0 12px;
+    color: var(--muted);
+    font-size: 16px;
+    font-weight: 700;
+    line-height: 1.5
 }
 
 .fields {
@@ -468,6 +477,57 @@ tbody tr:last-child td {
     margin-top: 14px
 }
 
+.bottom-nav {
+    position: fixed;
+    z-index: 20;
+    bottom: 0;
+    left: 50%;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    width: min(100%, 760px);
+    padding: 8px 10px max(8px, env(safe-area-inset-bottom));
+    transform: translateX(-50%);
+    border: 2px solid var(--line);
+    border-bottom: 0;
+    border-radius: 16px 16px 0 0;
+    background: var(--panel);
+    box-shadow: 0 -4px 18px rgb(0 0 0 / 12%)
+}
+
+.bottom-nav button {
+    display: flex;
+    min-width: 0;
+    min-height: 62px;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    padding: 6px 3px;
+    border: 0;
+    border-radius: 10px;
+    background: transparent;
+    color: var(--text);
+    font-size: 13px;
+    font-weight: 800;
+    cursor: pointer
+}
+
+.bottom-nav button[aria-current=step] {
+    background: var(--accent);
+    color: #171612
+}
+
+.nav-icon {
+    display: inline-flex;
+    width: 23px;
+    height: 23px
+}
+
+.nav-icon svg {
+    width: 100%;
+    height: 100%
+}
+
 .summary {
     width: min(100%, 760px);
     margin: 0 auto;
@@ -480,6 +540,39 @@ tbody tr:last-child td {
 
 .summary h2 {
     text-align: center
+}
+
+.summary h3 {
+    margin: 24px 0 8px;
+    font-size: 18px
+}
+
+.price-note {
+    margin: 0 0 10px;
+    color: #39362f;
+    font-size: 14px;
+    line-height: 1.5
+}
+
+.summary .rate-table input {
+    min-height: 42px;
+    padding: 8px 10px;
+    border-color: #8e897e;
+    background: #fff;
+    color: #171612
+}
+
+.summary .price-table {
+    font-size: 13px
+}
+
+.summary .price-table th,
+.summary .price-table td {
+    padding: 11px 8px
+}
+
+.summary #priceTotal {
+    font-size: 16px
 }
 
 .summary-intro {
@@ -594,6 +687,10 @@ tbody tr:last-child td {
 
     .actions {
         grid-template-columns: 1fr
+    }
+
+    .bottom-nav button {
+        font-size: 12px
     }
 
     .table-wrap {
