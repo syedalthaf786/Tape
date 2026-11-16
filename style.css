@@ -625,6 +625,123 @@ tbody tr:last-child td {
     color: #fff
 }
 
+.app-tour {
+    position: fixed;
+    inset: 0;
+    width: 100vw;
+    max-width: none;
+    height: 100vh;
+    height: 100dvh;
+    max-height: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+    color: var(--text);
+    pointer-events: none
+}
+
+.app-tour::backdrop {
+    background: transparent
+}
+
+.tour-shade {
+    position: fixed;
+    inset: 0;
+    width: 100vw;
+    height: 100vh;
+    height: 100dvh;
+    pointer-events: none
+}
+
+.tour-pointer {
+    position: fixed;
+    z-index: 2;
+    display: block;
+    font-size: 40px;
+    line-height: 1;
+    filter: drop-shadow(0 2px 3px #fff);
+    pointer-events: none;
+    animation: tour-pointer-bob 1s ease-in-out infinite;
+    transition: left .45s ease, top .45s ease
+}
+
+@keyframes tour-pointer-bob {
+    50% { transform: translateY(-8px) }
+}
+
+.tour-content {
+    position: fixed;
+    z-index: 3;
+    left: 50%;
+    bottom: max(16px, env(safe-area-inset-bottom));
+    width: min(calc(100vw - 32px), 480px);
+    max-height: min(78vh, 560px);
+    max-height: min(78dvh, 560px);
+    overflow-y: auto;
+    padding: 20px;
+    transform: translateX(-50%);
+    border: 2px solid var(--line);
+    border-radius: 20px;
+    background: var(--panel);
+    box-shadow: 0 18px 60px rgb(0 0 0 / 32%);
+    pointer-events: auto
+}
+
+.tour-content[data-position=top] {
+    top: max(16px, env(safe-area-inset-top));
+    bottom: auto
+}
+
+.tour-content .eyebrow {
+    margin-bottom: 10px;
+    letter-spacing: 0;
+    text-transform: none
+}
+
+.tour-content h2 {
+    margin-bottom: 10px;
+    font-size: 24px
+}
+
+.tour-content > #tourDescription {
+    margin-bottom: 20px;
+    color: var(--muted);
+    font-size: 17px;
+    line-height: 1.55
+}
+
+.tour-voice-status {
+    margin: -8px 0 10px;
+    color: var(--muted);
+    font-size: 14px;
+    line-height: 1.4
+}
+
+.tour-voice-button {
+    width: 100%;
+    min-height: 46px;
+    margin-bottom: 12px
+}
+
+.tour-target {
+    outline: 4px solid var(--accent) !important;
+    outline-offset: 4px
+}
+
+.tour-actions {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px
+}
+
+.tour-actions .primary {
+    width: auto;
+    margin: 0
+}
+
 [hidden] {
     display: none !important
 }
@@ -691,6 +808,10 @@ tbody tr:last-child td {
 
     .bottom-nav button {
         font-size: 12px
+    }
+
+    .tour-content {
+        padding: 18px
     }
 
     .table-wrap {

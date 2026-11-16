@@ -1,4 +1,4 @@
-var CACHE_NAME = "laying-tape-v1";
+var CACHE_NAME = "laying-tape-v4";
 var APP_FILES = ["./", "./index.html", "./style.css", "./script.js", "./manifest.webmanifest", "./icon.svg", "./icon-192.png", "./icon-512.png"];
 var PDF_LIBRARY = "https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js";
 

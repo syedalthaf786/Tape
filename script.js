@@ -3,6 +3,12 @@ var map = { "Hall": ["Flooring", "Wall"], "Dining": ["Flooring", "Wall"], "Bedro
 var selA = "Bathroom", selW = "Wall", selM = "Tile", selP = 10;
 var rows = [["Bathroom", "Wall", 14, 7, 2, 10, "Tile"], ["Bathroom", "Flooring", 5, 4, 2, 10, "Tile"], ["Balcony", "Flooring", 14, 6, 1, 10, "Tile"], ["Balcony", "Flooring", 9, 3, 1, 10, "Tile"], ["Kitchen", "Platform", 10, 2.5, 1, 10, "Tile"], ["Kitchen", "Wall", 20, 4, 1, 10, "Tile"], ["Hall", "Flooring", 525, 1, 1, 10, "Tile"]];
 var unitRates = Object.create(null);
+var tourSteps = [
+  { title: "Add customer and site", description: "Type the customer's name and the place. You can also add the date. These boxes are optional. Your report will show anything you enter here.", voiceText: "కస్టమర్ పేరు, పని జరిగే స్థలం రాయండి. తేదీ కూడా రాయవచ్చు. ఇవి తప్పనిసరి కాదు. మీరు ఇక్కడ రాసిన వివరాలు నివేదికలో కనిపిస్తాయి.", target: "#cust" },
+  { title: "Choose a room and work", description: "Tap a room. Choose floor, wall, or platform, then tile or granite. Enter length, width, and how many same-size rooms. The app adds extra material for cuts.", voiceText: "గది పేరును నొక్కండి. నేల పని, గోడ పని లేదా ప్లాట్‌ఫారమ్ పని ఎంచుకోండి. తర్వాత టైల్స్ లేదా గ్రానైట్ ఎంచుకోండి. గది పొడవు, వెడల్పు రాయండి. ఒకే కొలత ఉన్న గదులు ఎక్కువైతే, వాటి సంఖ్య రాయండి. కటింగ్ కోసం యాప్ కొంత అదనపు మెటీరియల్ కలుపుతుంది.", target: "#areaBtns" },
+  { title: "Save each room", description: "Check how much material to buy. Tap Add Measurement to save the room to your list. Your total is below the list. Tap Remove to delete a room.", voiceText: "కొనాల్సిన మెటీరియల్ పరిమాణం చూడండి. గదిని జాబితాలో చేర్చడానికి Add Measurement నొక్కండి. మీ మొత్తం జాబితా కింద కనిపిస్తుంది. గదిని తీసివేయడానికి Remove నొక్కండి.", target: "#addMeasurementButton" },
+  { title: "See your total and price", description: "Tap Summary Sheet to see, print, or share your report. To see the cost, tap 3. Enter Prices at the bottom of the screen. Enter the price for one square foot.", voiceText: "నివేదికను చూడటానికి, ప్రింట్ చేయటానికి లేదా పంచుకోవటానికి Summary Sheet నొక్కండి. ధర లెక్కించడానికి, స్క్రీన్ కింద ఉన్న 3. Enter Prices నొక్కండి. ఒక చదరపు అడుగు ధర రాయండి.", target: "#summaryButton" }
+];
 var iconShapes = { tape: "<rect x='3' y='6' width='18' height='13' rx='2'/><path d='M7 6v5m4-5v3m4-3v5m4-5v3M3 16h6'/>", sofa: "<path d='M5 12V9a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v3'/><path d='M5 11a2 2 0 0 0-2 2v5h18v-5a2 2 0 0 0-2-2'/><path d='M5 18v2m14-2v2M7 13h10v5H7z'/>", bed: "<path d='M3 5v16M3 13h18v8M3 9h6a3 3 0 0 1 3 3v1M12 10h5a4 4 0 0 1 4 4v-1'/>", kitchen: "<path d='M4 3v7m4-7v7M6 3v18M16 3v18m0-18c3 2 4 5 0 8'/>", dining: "<path d='M3 10h18M5 10v10m14-10v10M8 6v4m8-4v4M10 10V6h4v4M3 20h18'/>", balcony: "<path d='M3 8h18M5 8v13m14-13v13M3 14h18M3 21h18M9 8V5a3 3 0 0 1 6 0v3'/>", shower: "<path d='M4 10V6a3 3 0 0 1 6 0v1M2 10h14a4 4 0 0 1 4 4v1M6 17v.01M10 19v.01M14 17v.01M18 18v.01'/>", washer: "<rect x='4' y='3' width='16' height='18' rx='2'/><path d='M4 8h16M8 5h.01M11 5h.01'/><circle cx='12' cy='14' r='4'/>", building: "<path d='M4 21V4h16v17M8 8h2m4 0h2M8 12h2m4 0h2M10 21v-4h4v4'/>", floor: "<path d='M3 3h18v18H3zM3 9h18M3 15h18M9 3v18M15 3v18'/>", wall: "<path d='M3 4h18v16H3zM3 9h18M3 15h18M8 4v5m8 0v6M8 15v5'/>", platform: "<path d='M3 9h18M5 9v12h14V9M5 14h14M8 11v2m4-2v2m4-2v2'/>", tile: "<path d='M4 4h7v7H4zM13 4h7v7h-7zM4 13h7v7H4zM13 13h7v7h-7z'/>", granite: "<path d='m3 16 3-8 5-4 7 2 4 7-5 7H7zM6 8l5 4 7-2M11 4l1 8 5 8'/>", info: "<circle cx='12' cy='12' r='9'/><path d='M12 11v5m0-8h.01'/>", calendar: "<rect x='3' y='5' width='18' height='16' rx='2'/><path d='M16 3v4M8 3v4M3 10h18'/>", person: "<circle cx='12' cy='8' r='4'/><path d='M4 21a8 8 0 0 1 16 0'/>", pin: "<path d='M20 10c0 5-8 12-8 12S4 15 4 10a8 8 0 1 1 16 0Z'/><circle cx='12' cy='10' r='2.5'/>", ruler: "<path d='M3 7h18v10H3zM7 7v4m4-4v2m4-2v4m4-4v2'/>", dimension: "<path d='M4 12h16M4 12l4-4m-4 4 4 4m12-4-4-4m4 4-4 4'/>", quantity: "<path d='M4 5h4v4H4zM11 7h9M4 15h4v4H4zM11 17h9'/>", plus: "<path d='M12 5v14M5 12h14'/>", trash: "<path d='M4 7h16M10 11v6m4-6v6M5 7l1 14h12l1-14M9 7V4h6v3'/>", eye: "<path d='M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12Z'/><circle cx='12' cy='12' r='3'/>", printer: "<path d='M6 9V3h12v6M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2M6 14h12v7H6zM18 12h.01'/>", back: "<path d='m10 5-7 7 7 7M3 12h18'/>", sun: "<circle cx='12' cy='12' r='4'/><path d='M12 2v2m0 16v2M4.93 4.93l1.42 1.42m11.3 11.3 1.42 1.42M2 12h2m16 0h2M4.93 19.07l1.42-1.42m11.3-11.3 1.42-1.42'/>", moon: "<path d='M20.9 13A9 9 0 0 1 11 3.1 9 9 0 1 0 20.9 13Z'/>" };
 iconShapes.money = "<circle cx='12' cy='12' r='9'/><path d='M15 8.5c-.6-.8-1.5-1.2-2.7-1.2-1.4 0-2.3.7-2.3 1.7 0 2.7 5 1.2 5 4.2 0 1.1-1 2-2.6 2-1.2 0-2.2-.4-2.9-1.2M12.5 5.5v13'/>";
 function createIcon(name, className) { var svg = document.createElementNS("http://www.w3.org/2000/svg", "svg"); svg.setAttribute("viewBox", "0 0 24 24"); svg.setAttribute("fill", "none"); svg.setAttribute("stroke", "currentColor"); svg.setAttribute("stroke-width", "1.8"); svg.setAttribute("stroke-linecap", "round"); svg.setAttribute("stroke-linejoin", "round"); svg.setAttribute("aria-hidden", "true"); if (className) svg.setAttribute("class", className); svg.innerHTML = iconShapes[name]; return svg }
@@ -234,6 +240,142 @@ async function sharePricePdfOnWhatsApp() {
 }
 function setTheme(theme) { document.documentElement.dataset.theme = theme; var light = theme === "light"; document.getElementById("themeIcon").replaceChildren(createIcon(light ? "moon" : "sun")); document.getElementById("themeLabel").textContent = light ? "Dark mode" : "Light mode"; document.getElementById("themeToggle").setAttribute("aria-label", "Switch to " + (light ? "dark" : "light") + " theme"); document.querySelector('meta[name="theme-color"]').content = light ? "#f4f3ef" : "#171612" }
 function toggleTheme() { setTheme(document.documentElement.dataset.theme === "light" ? "dark" : "light") }
+var tourStepIndex = 0, activeTourTarget = null, currentTourUtterance = null, tourVoicePending = false;
+function stopTourVoice() {
+  if ("speechSynthesis" in window) window.speechSynthesis.cancel();
+  currentTourUtterance = null;
+  tourVoicePending = false;
+  document.getElementById("tourVoiceButton").textContent = "Play Telugu voice";
+  document.getElementById("tourVoiceButton").setAttribute("aria-pressed", "false");
+}
+function playTourVoice() {
+  if (!("speechSynthesis" in window) || typeof SpeechSynthesisUtterance === "undefined") {
+    document.getElementById("tourVoiceStatus").textContent = "Voice is not available on this device. Read the words above.";
+    return;
+  }
+  stopTourVoice();
+  var step = tourSteps[tourStepIndex];
+  var voice = window.speechSynthesis.getVoices().find(function (item) { return /^te(?:-|$)/i.test(item.lang) });
+  if (!voice) {
+    tourVoicePending = true;
+    document.getElementById("tourVoiceButton").textContent = "Try Telugu voice again";
+    document.getElementById("tourVoiceStatus").textContent = "Telugu voice not found. Add a Telugu voice in your device's text-to-speech settings.";
+    return;
+  }
+  var utterance = new SpeechSynthesisUtterance(step.voiceText);
+  currentTourUtterance = utterance;
+  utterance.voice = voice;
+  utterance.lang = voice.lang;
+  utterance.rate = 0.88;
+  document.getElementById("tourVoiceButton").textContent = "Stop Telugu voice";
+  document.getElementById("tourVoiceButton").setAttribute("aria-pressed", "true");
+  utterance.onstart = function () {
+    if (currentTourUtterance === utterance) document.getElementById("tourVoiceButton").textContent = "Stop Telugu voice";
+  };
+  utterance.onend = function () {
+    if (currentTourUtterance === utterance) {
+      currentTourUtterance = null;
+      document.getElementById("tourVoiceButton").textContent = "Play Telugu voice again";
+      document.getElementById("tourVoiceButton").setAttribute("aria-pressed", "false");
+    }
+  };
+  utterance.onerror = function (event) {
+    if (currentTourUtterance !== utterance) return;
+    currentTourUtterance = null;
+    document.getElementById("tourVoiceButton").textContent = "Play Telugu voice";
+    document.getElementById("tourVoiceButton").setAttribute("aria-pressed", "false");
+    if (event.error !== "canceled" && event.error !== "interrupted") {
+      console.error("Could not play the Telugu app tour voice.", event.error);
+      document.getElementById("tourVoiceStatus").textContent = "Telugu voice did not play. Check your device's text-to-speech settings.";
+    }
+  };
+  document.getElementById("tourVoiceStatus").textContent = "";
+  window.speechSynthesis.speak(utterance);
+}
+function updateTourSpotlight() {
+  var dialog = document.getElementById("appTour");
+  if (!dialog.open) return;
+  var step = tourSteps[tourStepIndex], target = document.querySelector(step.target);
+  if (!target) {
+    console.error("Could not find the app tour target.", step.target);
+    return;
+  }
+  if (activeTourTarget) activeTourTarget.classList.remove("tour-target");
+  activeTourTarget = target;
+  target.classList.add("tour-target");
+  var rect = target.getBoundingClientRect(), width = window.innerWidth, height = window.innerHeight;
+  var left = Math.max(0, rect.left - 12), top = Math.max(0, rect.top - 12);
+  var cutout = document.getElementById("tourSpotlightCutout");
+  document.getElementById("tourShade").setAttribute("viewBox", "0 0 " + width + " " + height);
+  document.getElementById("tourMaskBackground").setAttribute("width", width);
+  document.getElementById("tourMaskBackground").setAttribute("height", height);
+  document.getElementById("tourShadeRect").setAttribute("width", width);
+  document.getElementById("tourShadeRect").setAttribute("height", height);
+  cutout.setAttribute("x", left);
+  cutout.setAttribute("y", top);
+  cutout.setAttribute("width", Math.min(rect.width + 24, width - left));
+  cutout.setAttribute("height", Math.min(rect.height + 24, height - top));
+  document.getElementById("tourPointer").style.left = Math.max(8, Math.min(rect.right - 10, width - 52)) + "px";
+  document.getElementById("tourPointer").style.top = Math.max(8, Math.min(rect.bottom - 10, height - 52)) + "px";
+  document.querySelector(".tour-content").dataset.position = rect.top + rect.height / 2 > height * 0.48 ? "top" : "bottom";
+}
+function updateTourStep() {
+  var step = tourSteps[tourStepIndex];
+  document.getElementById("tourProgress").textContent = "Step " + (tourStepIndex + 1) + " of " + tourSteps.length;
+  document.getElementById("tourTitle").textContent = step.title;
+  document.getElementById("tourDescription").textContent = step.description;
+  document.getElementById("tourBackButton").disabled = tourStepIndex === 0;
+  document.getElementById("tourNextButton").textContent = tourStepIndex === tourSteps.length - 1 ? "Start measuring" : "Next";
+  document.querySelector(step.target).scrollIntoView({ block: "start", behavior: "auto" });
+  updateTourSpotlight();
+  playTourVoice();
+}
+function startAppTour() {
+  var installed = window.matchMedia("(display-mode: standalone)").matches || window.navigator.standalone === true;
+  if (!installed) return;
+  try {
+    if (window.localStorage.getItem("layingTapeTourComplete") === "true") return;
+  } catch (error) {
+    console.error("Could not check whether the app tour was completed.", error);
+  }
+  tourStepIndex = 0;
+  document.getElementById("appTour").showModal();
+  updateTourStep();
+}
+document.getElementById("tourBackButton").addEventListener("click", function () {
+  if (tourStepIndex > 0) { tourStepIndex--; updateTourStep() }
+});
+document.getElementById("tourNextButton").addEventListener("click", function () {
+  if (tourStepIndex < tourSteps.length - 1) {
+    tourStepIndex++;
+    updateTourStep();
+    return;
+  }
+  stopTourVoice();
+  if (activeTourTarget) activeTourTarget.classList.remove("tour-target");
+  activeTourTarget = null;
+  try {
+    window.localStorage.setItem("layingTapeTourComplete", "true");
+  } catch (error) {
+    console.error("Could not save app tour completion.", error);
+  }
+  document.getElementById("appTour").close();
+});
+document.getElementById("tourVoiceButton").addEventListener("click", function () {
+  if (currentTourUtterance) stopTourVoice();
+  else playTourVoice();
+});
+if ("speechSynthesis" in window) window.speechSynthesis.addEventListener("voiceschanged", function () {
+  if (tourVoicePending && document.getElementById("appTour").open) playTourVoice();
+});
+document.getElementById("appTour").addEventListener("cancel", function (event) { event.preventDefault() });
+document.getElementById("appTour").addEventListener("close", function () {
+  stopTourVoice();
+  if (activeTourTarget) activeTourTarget.classList.remove("tour-target");
+  activeTourTarget = null;
+});
+window.addEventListener("resize", updateTourSpotlight);
+window.addEventListener("scroll", updateTourSpotlight, { passive: true });
 ["len", "wid", "qty"].forEach(function (id) { document.getElementById(id).addEventListener("input", updatePreview) });
 document.getElementById("themeToggle").addEventListener("click", toggleTheme);
 document.getElementById("summaryButton").addEventListener("click", showSummary);
@@ -275,4 +417,4 @@ window.addEventListener("appinstalled", function () { document.getElementById("i
 if ("serviceWorker" in navigator && location.protocol !== "file:") {
   navigator.serviceWorker.register("./service-worker.js").catch(function (error) { console.error("Could not register the app for offline use.", error) });
 }
-hydrateIcons(); document.getElementById("date").valueAsDate = new Date(); setTheme("light"); refresh();
+hydrateIcons(); document.getElementById("date").valueAsDate = new Date(); setTheme("light"); refresh(); startAppTour();

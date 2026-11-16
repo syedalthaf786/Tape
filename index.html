@@ -45,7 +45,7 @@
 
   <section class="panel no-print" aria-label="Add measurement">
     <div class="section-title"><h2>Add Measurement</h2><span class="hint">Tap to select</span></div>
-    <!-- <p class="simple-help">Choose a room, enter its size in feet, then tap “Add Measurement.”</p> -->
+    <p class="simple-help">Choose a room, enter its size in feet, then tap “Add Measurement.”</p>
     <div class="step">
       <p class="step-label">1 · Select Area</p>
       <div class="choices" id="areaBtns" aria-label="Select area"></div>
@@ -161,6 +161,29 @@
       <span class="nav-icon" data-icon="money" aria-hidden="true"></span><span>3. Enter Prices</span>
     </button>
   </nav>
+  <dialog class="app-tour" id="appTour" aria-labelledby="tourTitle" aria-describedby="tourDescription">
+    <svg class="tour-shade" id="tourShade" aria-hidden="true">
+      <defs>
+        <mask id="tourSpotlightMask" maskUnits="userSpaceOnUse">
+          <rect id="tourMaskBackground" fill="white"></rect>
+          <rect id="tourSpotlightCutout" fill="black" rx="16"></rect>
+        </mask>
+      </defs>
+      <rect id="tourShadeRect" fill="rgb(0 0 0 / 62%)" mask="url(#tourSpotlightMask)"></rect>
+    </svg>
+    <span class="tour-pointer" id="tourPointer" aria-hidden="true">👆</span>
+    <div class="tour-content">
+      <p class="eyebrow" id="tourProgress" aria-live="polite"></p>
+      <h2 id="tourTitle"></h2>
+      <p id="tourDescription"></p>
+      <p class="tour-voice-status" id="tourVoiceStatus" aria-live="polite"></p>
+      <button class="secondary tour-voice-button" id="tourVoiceButton" type="button" aria-pressed="false">Play Telugu voice</button>
+      <div class="tour-actions">
+        <button class="secondary" id="tourBackButton" type="button">Back</button>
+        <button class="primary" id="tourNextButton" type="button">Next</button>
+      </div>
+    </div>
+  </dialog>
 </main>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <script src="script.js"></script>
