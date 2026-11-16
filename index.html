@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#f4f3ef">
+<title>Anwar Tape</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<main class="app">
+  <div id="calculatorView">
+  <header class="topbar no-print">
+    <div class="brand">
+      <div class="brand-icon" data-icon="tape" aria-hidden="true"></div>
+      <div><h1>Anwar Tape</h1><p class="tagline">Length × Width = Sq Ft</p></div>
+    </div>
+    <div class="header-actions">
+      <button class="theme-toggle" id="themeToggle" type="button" aria-label="Switch to dark theme">
+        <span class="theme-icon" id="themeIcon" data-icon="sun" aria-hidden="true"></span>
+        <span id="themeLabel">Light mode</span>
+      </button>
+      <button class="summary-action" id="summaryButton" type="button">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+          <path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12Z"></path>
+          <circle cx="12" cy="12" r="3"></circle>
+        </svg>
+        <span>Summary Sheet</span>
+      </button>
+    </div>
+  </header>
+
+  <section class="panel no-print" aria-label="Job details">
+    <p class="job-note"><span class="field-icon" data-icon="info" aria-hidden="true"></span> Job details — optional, for print sheet</p>
+    <div class="fields">
+      <div><label for="date"><span class="field-icon" data-icon="calendar" aria-hidden="true"></span>Date</label><input id="date" type="date"></div>
+      <div><label for="cust"><span class="field-icon" data-icon="person" aria-hidden="true"></span>Customer Name</label><input id="cust" placeholder="e.g. Patel Family"></div>
+      <div class="wide"><label for="site"><span class="field-icon" data-icon="pin" aria-hidden="true"></span>Site Name</label><input id="site" placeholder="e.g. Flat 402, Sunrise Apt"></div>
+    </div>
+  </section>
+
+  <section class="panel no-print" aria-label="Add measurement">
+    <div class="section-title"><h2>Add Measurement</h2><span class="hint">Tap to select</span></div>
+    <div class="step">
+      <p class="step-label">1 · Select Area</p>
+      <div class="choices" id="areaBtns" aria-label="Select area"></div>
+    </div>
+    <div class="step">
+      <p class="step-label" id="workLabel">2 · Select Work Type</p>
+      <div class="choices" id="workBtns" aria-label="Select work type"></div>
+    </div>
+    <div class="step">
+      <p class="step-label">3 · Select Your Work Material Type</p>
+      <div class="choices" id="materialBtns" aria-label="Select work material type"></div>
+    </div>
+    <div class="fields measure-fields">
+      <div><label for="len"><span class="field-icon" data-icon="ruler" aria-hidden="true"></span>Length (feet)</label><input id="len" type="number" min="0" step="any" value="14"></div>
+      <div><label for="wid"><span class="field-icon" data-icon="dimension" aria-hidden="true"></span>Width / Height (feet)</label><input id="wid" type="number" min="0" step="any" value="7"></div>
+      <div class="wide"><label for="qty"><span class="field-icon" data-icon="quantity" aria-hidden="true"></span>Quantity</label><input id="qty" type="number" min="1" step="1" value="1"></div>
+    </div>
+    <div class="step">
+      <p class="step-label">4 · Wastage %</p>
+      <div class="choices" id="wastBtns" aria-label="Select wastage percentage"></div>
+    </div>
+    <div class="preview" aria-live="polite">
+      <span id="previewText">Preview: 0 sq ft + 10% wastage =</span>
+      <strong id="previewTotal">0 final sq ft</strong>
+    </div>
+    <button class="primary" id="addMeasurementButton" type="button"><span class="field-icon" data-icon="plus" aria-hidden="true"></span> Add Measurement</button>
+  </section>
+
+  <section class="panel no-print" aria-label="Your measurements">
+    <div class="section-title">
+      <h2>Your Measurements</h2>
+      <button class="clear" id="clearBtn" type="button"><span class="field-icon" data-icon="trash" aria-hidden="true"></span> Clear All</button>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Area</th><th>Work</th><th>Material</th><th>Length</th><th>Width</th><th>Qty</th><th>Sq Ft</th><th>Wast %</th><th>Wast Sq Ft</th><th>Final Sq Ft</th><th>Remove</th></tr></thead>
+        <tbody id="tb"></tbody>
+        <tfoot><tr class="total-row"><td colspan="6">TOTAL</td><td id="t1">0</td><td>—</td><td id="t2">0</td><td id="t3">0</td><td></td></tr></tfoot>
+      </table>
+    </div>
+    <div class="stats">
+      <article class="stat"><p class="eyebrow">Total Sq Ft</p><p class="stat-value" id="statArea">0</p><p class="stat-note">Before wastage</p></article>
+      <article class="stat"><p class="eyebrow">Wastage</p><p class="stat-value" id="statWaste">0</p><p class="stat-note">Extra for cuts &amp; breakage</p></article>
+      <article class="stat"><p class="eyebrow">Final Total to Buy</p><p class="stat-value"><span id="statFinal">0</span> <small>sq ft</small></p>      <p class="stat-note">Order this much material</p></article>
+    </div>
+    <div class="actions">
+      <button class="secondary" id="viewSummaryButton" type="button"><span class="field-icon" data-icon="eye" aria-hidden="true"></span> View Summary Sheet</button>
+      <button class="clear" id="clearAllButton" type="button"><span class="field-icon" data-icon="trash" aria-hidden="true"></span> Clear All Measurements</button>
+    </div>
+  </section>
+  </div>
+
+  <section id="summaryWrap" aria-labelledby="summaryTitle" hidden>
+    <div class="summary">
+      <h2 id="summaryTitle">Anwar Tape — Summary</h2>
+      <p class="summary-intro">Area Name · Work Type · Material · Quantity · Final Sq Ft</p>
+      <div class="summary-meta">
+        <p><b>Customer:</b> <span id="sCust"></span></p>
+        <p><b>Site:</b> <span id="sSite"></span></p>
+        <p><b>Date:</b> <span id="sDate"></span></p>
+      </div>
+      <table>
+        <thead><tr><th>Area Name</th><th>Work Type</th><th>Material</th><th>Quantity</th><th>Final Sq Ft</th></tr></thead>
+        <tbody id="sTb"></tbody>
+        <tfoot><tr class="total-row"><td colspan="4">TOTAL</td><td id="sTot">0</td></tr></tfoot>
+      </table>
+      <p class="signature">Signature: ____________________</p>
+      <div class="actions no-print">
+        <button class="secondary" id="printSummaryButton" type="button"><span class="field-icon" data-icon="printer" aria-hidden="true"></span> Print Summary</button>
+        <button class="secondary" id="backButton" type="button"><span class="field-icon" data-icon="back" aria-hidden="true"></span> Back to Calculator</button>
+      </div>
+    </div>
+  </section>
+</main>
+<script src="script.js"></script>
+</body>
+</html>
